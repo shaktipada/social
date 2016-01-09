@@ -1,0 +1,58 @@
+{% load bootstrap %}
+{% load social_tags %}
+
+</br></br>
+
+<p><strong>{{ post.posted_by }}</strong> {% are_connected user post.posted_by %}</p>
+
+{% check_liked post post.id user as like_post %}
+
+<p><a href="{% url 'post' post.id %}">{{ post.status }}</a></p>
+<p>
+  {% if like_post %}
+    <a class="btn btn-success btn-xs" href="{% url 'unlike_post' post.id %}">liked</a>
+  {% else %}
+    <a class="btn btn-primary btn-xs" href="{% url 'like_post' post.id %}">like</a>
+  {% endif %}
+  {% if post.posted_by == user %}
+    <a class="btn btn-primary btn-xs" href="{% url 'edit_post' post.id %}">Edit</a> <a class="btn btn-danger btn-xs" href="{% url 'delete_post' post.id %}">Delete</a>
+  {% endif %}
+</p>
+<p>{{ post.created_at|date:"l, F jS" }}</p>
+</br>
+
+<p><b>Comments</b></p>
+
+
+{% for comment in post.comment_set.all %}
+
+  {%  check_liked comment comment.id user as like_comment %}
+  <p><b>{{ comment.commented_by }}</b> on {{ comment.created_at|date:"l, F jS" }}</p>
+  <p>{{ comment.comment }}</p>
+  <p>
+  {% if like_comment %}
+    <a class="btn btn-success btn-xs" href="{% url 'unlike_comment' comment.id %}">liked</a>
+  {% else %}
+    <a class="btn btn-primary btn-xs" href="{% url 'like_comment' comment.id %}">like</a>
+  {% endif %}
+  {% if comment.commented_by == user %}
+    <a class="btn btn-danger btn-xs" href="{% url 'delete_comment' comment.id %}">Delete</a>
+  {% endif %}</p>
+
+{% endfor %}
+
+</br>
+<div class="row">
+  <div class="col-md-4 col-sm-6 col-xs-8">
+    <form action="{% url 'comment' post.id %}" method="POST">
+      {% csrf_token %}
+      {{ comment_form|bootstrap }}
+      <button class="btn btn-primary btn-sm" type="submit">comment</button>
+    </form>
+  </div>
+  <div class="col-md-8 col-sm-6 col-xs-4"></div>
+</div>
+
+{% ifnotequal forloop.counter 0 %}
+      </br></br></br>
+{% endifnotequal %}

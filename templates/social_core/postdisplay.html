@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block head_title %}Post by {{ post.posted_by }}{% endblock head_title %}
+{% block content %}
+
+<div>
+  {% include "includes/_post.html" with post=post comment_form=comment_form %}
+</div>
+
+{% endblock %}

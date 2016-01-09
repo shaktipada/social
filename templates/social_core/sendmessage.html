@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block head_title %}Send Message{% endblock %}
+
+{% block content %}
+  <div>
+    <form class="form" action="" method="POST">
+      {% csrf_token %}
+      {{ message_form|bootstrap }}
+      <button class="btn btn-primary" type="submit">Message</button>
+    </form>
+    </br></br>
+    <b>Messages</b>
+    </br></br>
+    <div>
+      {% if messages %}
+        {% for message in messages %}
+          <p>Message to <b>{{ message.message_for.get_full_name }}</b> on {{ message.created_at|date:"l, F jS" }}</p>
+          <p>{{ message.message }}</p>
+        {% endfor %}
+      {% else%}
+        <p> No message to display </p>
+        <p> Send a message </p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock content%}

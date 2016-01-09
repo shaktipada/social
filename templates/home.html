@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% load social_tags %}
+
+{% block head_title %}Home{% endblock head_title %}
+
+{% block content%}
+{% include "includes/_post_form.html" with form=post_form %}
+  {% for post in posts %}
+    </br></br>
+    <p><strong>{{ post.posted_by }}</strong>  {% are_connected user post.posted_by %}</p>
+
+    {% check_liked post post.id user as like %}
+
+    <p><a href="{% url 'post' post.id %}">{{ post.status }}</a></p>
+    <p>{{ post.created_at|date:"l, F jS" }}</p>
+    {% if like %}
+      <a class="btn btn-success btn-xs" href="{% url 'unlike_post' post.id %}">liked</a>
+    {% else %}
+      <a class="btn btn-primary btn-xs" href="{% url 'like_post' post.id %}">like</a>
+    {% endif %}
+
+    </br></br>
+    <p><b>Comments</b></p>
+    {% for comment in post.comment_set.all %}
+      {%  check_liked comment comment.id user as like %}
+      <p><b>{{ comment.commented_by }}</b> on {{ comment.created_at|date:"l, F jS" }}</p>
+      <p>{{ comment.comment }}</p>
+      <p>
+        {% if like %}
+          <a class="btn btn-success btn-xs" href="{% url 'unlike_comment' comment.id %}">liked</a>
+        {% else %}
+          <a class="btn btn-primary btn-xs" href="{% url 'like_comment' comment.id %}">like</a>
+        {% endif %}
+        {% if comment.commented_by == user %}
+          <a class="btn btn-danger btn-xs" href="{% url 'delete_comment' comment.id %}">Delete</a>
+        {% endif %}
+      </p>
+    {% endfor %}
+    </br>
+
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-8">
+        <form action="{% url 'comment' post.id %}" method="POST">
+          {% csrf_token %}
+          {{ comment_form|bootstrap }}
+          <button class="btn btn-primary btn-sm" type="submit">comment</button>
+        </form>
+        <div class="col-md-8 col-sm-6 col-xs-4"></div>
+      </div>
+    </div>
+
+    {% ifnotequal forloop.counter 0 %}
+      </br></br></br>
+    {% endifnotequal %}
+
+  {% endfor %}
+
+<div class="pagination">
+  <span class="step-links">
+    {% if posts.has_previous %}
+      <a href="?page={{ posts.previous_page_number }}">prev</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+    </span>
+
+    {% if posts.has_next %}
+      <a href="?page={{ posts.next_page_number }}">next</a>
+    {% endif %}
+  </span>
+</div>
+
+{% endblock content %}

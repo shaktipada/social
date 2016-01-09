@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block head_title %}Friends{% endblock head_title %}
+
+{% block content %}
+
+<div>
+  <h4>Friends</h4></br>
+  <ul>
+    {% for friend in friends %}
+      {% if user != friend.request_from %}
+        <li><a href="{% url 'user' friend.request_from.id %}">{{ friend.request_from.get_full_name }} ---@ {{ friend.request_from }}</a></li>
+      {% elif user != friend.request_to %}
+        <li><a href="{% url 'user' friend.request_to.id %}">{{ friend.request_to.get_full_name }}  ---@ {{ friend.request_to }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+  <div class="pagination">
+    <span class="step-links">
+      {% if friends.has_previous %}
+        <a href="?page={{ friends.previous_page_number }}">prev</a>
+      {% endif %}
+
+      <span class="current">
+        Page {{ friends.number }} of {{ friends.paginator.num_pages }}.
+      </span>
+
+      {% if friends.has_next %}
+        <a href="?page={{ friends.next_page_number }}">next</a>
+      {% endif %}
+    </span>
+  </div>
+
+</div>
+
+{% endblock content%}

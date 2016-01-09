@@ -1,0 +1,23 @@
+{% load social_tags %}
+
+<table class="table table-condensed">
+ <thead>
+   <th>First Name</th>
+   <th>Last Name</th>
+   <th>Email ID</th>
+   <th>Requests</th>
+ </thead>
+ <tbody>
+  {% for request_to in users %}
+    <tr>
+      {% if request_to != user %}
+        <td>{{ request_to.first_name }}</a></td>
+        <td>{{ request_to.last_name }}</td>
+        <td>{{ request_to.email }}</td>
+        <td><a href="{% url 'user' request_to.id %}">{{ request_to.username }}</td>
+        <td>{% are_connected user request_to %}</td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+ </tbody>
+</table>

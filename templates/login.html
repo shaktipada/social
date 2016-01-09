@@ -1,0 +1,68 @@
+{% load url from future %}
+{% load bootstrap %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Social</title>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+      body {
+        margin : 80px 300px 80px 300px;
+      }
+      div.container {
+        width: 90%;
+        vertical-align: center;
+        padding: 5px;
+        margin: 0;
+      }
+      h5 {
+        text-align: justify;
+        font-weight: 700;
+      }
+      li {
+        list-style-type: none;
+      }
+    </style>
+</head>
+<body>
+ <h2>Welcome to Social</h2>
+  <div class="container">
+    <table class="table table-condensed">
+     <thead>
+      <tr>
+        <td>
+          <div class="socialaccount_ballot">
+            {% if socialaccount.providers  %}
+              <h5>Sign Up with</h5>
+              <ul class="socialaccount_providers">
+                <h3>{% include "socialaccount/snippets/provider_list.html" with process="login" %}</h3>
+              </ul>
+              {% include "socialaccount/snippets/login_extra.html" %}
+            {% endif %}
+            <h4><p style="text-align:center;">Or
+              </br>
+              </br><a href="{% url 'account_signup' %}">Create An Account</a>
+            </h4>
+          </div>
+          </td>
+          <td>
+            <form class="login" method="POST" action="{% url 'account_login' %}">
+              {% csrf_token %}
+              {{ form|bootstrap }}
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Sign In</button>
+                <a class="btn" href="{% url 'account_reset_password' %}">Forgot Password ?</a>
+              </div>
+           </form>
+          </td>
+      </tr>
+     </thead>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% load url from future %}
+{% load bootstrap %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Social Sign In</title>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+      body {
+        margin : 80px 300px 80px 300px;
+      }
+      div.container {
+        width: 90%;
+        vertical-align: center;
+        padding: 5px;
+        margin: 0;
+      }
+      h5 {
+        text-align: justify;
+        font-weight: 700;
+      }
+      li {
+        list-style-type: none;
+      }
+    </style>
+</head>
+<body>
+  <h2>Welcome to Social</h2>
+  <h2>Sign Up</h2>
+  <p>Already have an account? Then please <a href="login.html">sign in</a></p>
+  <div class="container">
+<form id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {{ form|bootstrap }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <div class="form-actions">
+  <button class="btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
+  </div>
+</form>
+</div>
+</body>
+</html>

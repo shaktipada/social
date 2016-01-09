@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block head_title %}Add Friends{% endblock head_title %}
+
+{% block content %}
+</br></br>
+<div>
+  Search for a Friend and send a friend request (Type Email ID or FullName)</br>
+  <input type="text" name="search">
+  </br>
+  <div id="divlist">
+    {% include "includes/_user.html" with users=users %}
+  </div>
+  <a href="{% url 'posts' %}">Done</a>
+</div>
+<script>
+  $(document).ready(function(){
+    $("input").keyup(function(){
+      $(this).PreventDefault;
+      var firstname, lastname, email;
+      firstname= $("[name='search']").val();
+      lastname= $("[name='search']").val();
+      email= $("[name='search']").val();
+      username= $("[name='search']").val();
+      var data = {"first_name": firstname,
+                  "last_name": lastname,
+                  "email": email,
+                  "username": username,
+                  "csrfmiddlewaretoken": "{{ csrf_token }}"
+              };
+      $.post("{% url 'addfriend' %}", data, function(result){
+        $("#divlist").html(result); });
+    });
+});
+</script>
+
+{% endblock content %}

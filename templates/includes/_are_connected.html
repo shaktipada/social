@@ -1,0 +1,14 @@
+
+{% if friend and request_from != request_to %}
+   <a class="btn btn-danger btn-sm" href="{% url 'deletefriend' request_to.id %}">Delete friend</a>
+{% elif friend_request and request_from != request_to %}
+   <a class="btn btn-danger btn-sm" href="{% url 'deletefriend' request_to.id %}">Cancel friend request</a>
+{% elif not friend and request_from != request_to %}
+   <a class="btn btn-primary btn-sm" href="{% url 'addasfriend' request_to.id %}">Add friend</a>
+{% endif %}
+
+{% if not follow and request_from != request_to %}
+   <a class="btn btn-primary btn-sm" href="{% url 'follow' request_to.id %}">Follow</a>
+{% elif follow and request_from != request_to %}
+   <a class="btn btn-danger btn-sm" href="{% url 'unfollow' request_to.id %}">Unfollow</a>
+{% endif %}

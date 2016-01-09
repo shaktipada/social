@@ -1,0 +1,33 @@
+{% load url from future %}
+{% load bootstrap %}
+{% load account %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+    {% block head_title %}
+    {% endblock %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+    {% if user.is_authenticated %}
+      {% include "includes/_header.html" %}
+    {% endif %}
+    {% comment %}
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      {% endif %}
+    {% endcomment %}
+      {% block content %}
+      {% endblock %}
+
+    </div>
+  </body>
+</html>

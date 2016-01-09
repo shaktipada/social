@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block head_title %}Posts{% endblock head_title %}
+
+{% block content %}
+
+{% if form.errors %}
+  {% include "includes/_post_form.html" with form=form %}
+{% endif %}
+
+<div>
+  {% for post in posts %}
+    {% comment %}
+    {% if post.posted_by == user %}
+      <input type="checkbox" class="checkBoxClass"/>
+    {% endif %}
+    {% endcomment %}
+
+    {% include "includes/_post.html" with post=post comment_form=comment_form %}
+
+  {% endfor %}
+  <div class="pagination">
+    <span class="step-links">
+      {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}">prev</a>
+      {% endif %}
+
+      <span class="current">
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+      </span>
+
+      {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}">next</a>
+      {% endif %}
+    </span>
+  </div>
+
+</div>
+
+{% comment %}
+<input type="checkbox" id="ckbCheckAll" /> <a href="{% url 'delete_all_posts' %}">Delete all</a>
+<script type="text/javascript">
+    $(document).ready(function () {
+    $("#ckbCheckAll").click(function () {
+        $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+    });
+});
+</script>
+{% endcomment %}
+
+{% endblock %}

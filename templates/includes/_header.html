@@ -1,0 +1,53 @@
+{% load social_tags %}
+{% load bootstrap %}
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand navbar-left" href="#">{{ user.get_full_name }}   @{{ user.username }}</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Friends <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'user_friends' %}">My Friends</a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'addfriend' %}">Find more people</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Notifiacations <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            {% notify user as notifications %}
+            {% if notifications %}
+              <a href="{% url 'notification_seen' %}">Mark all as seen</a>
+              {% for notification in notifications %}
+                  <li><a href="#">{{ notification.display|safe }}</a></li>
+              {% endfor %}
+            {% else %}
+              <li><a href="#">There are no notifications for now</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Messages <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            {% unread_messages user as messages %}
+            {% if messages %}
+              <a href="{% url 'messages_read' %}">Mark all as read</a>
+              {% for message in messages %}
+                  <li><a href="{% url 'message' message.id %}">{{ message.display|safe }}</a></li>
+              {% endfor %}
+            {% else %}
+              <li><a href="#">There are no messages for now</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        <li><a href="{% url 'posts' %}">Posts</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+   </div>
+  </div>
+</nav>

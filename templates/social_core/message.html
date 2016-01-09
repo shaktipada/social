@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head_title %}Messages{% endblock %}
+
+{% block content %}
+  <div>
+    <h4>Messages</h4>
+    </br>
+    {% for message in messages %}
+      <p>Message from <a href="{% url 'user' message.message_by.id %}">{{ message.message_by }}</a> at {{ message.created_at|date:"l, F jS" }}</p></br>
+      <p>{{ message.message }}</p>
+    {% endfor %}
+  </div>
+
+{% endblock content%}

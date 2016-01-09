@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load social_tags %}
+{% block head_title %}{{ profile_user.get_full_name }}{% endblock %}
+{% block content %}
+  <div>
+    <p>{{ profile_user.get_full_name }}<p>
+    {% if profile_user != user %}
+
+      {%  are_connected user profile_user %}
+
+    {% endif %}
+    </br>
+    <a href="{% url 'user_posts' profile_user.id %}"><p>Posts by {{ profile_user.get_full_name }}</p></a>
+    <a href="{% url 'send_message' profile_user.id %}"><p>Write a message for {{ profile_user.get_full_name }}</p></a>
+  </div>
+{% endblock content %}

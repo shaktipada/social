@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block head_title %}Edit Post{% endblock head_title %}
+{% block content %}
+
+<div>
+  <p><strong>{{ post.posted_by }}</strong></p>
+    <p>{{ post.status }}</p>
+    <p>{{ post.created_at|date:"l, F jS" }}</p>
+    <form class="form" action="{% url 'edit_post' post.id %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|bootstrap }}
+      <button class="btn btn-primary" type="submit">Edit</button>
+    </form>
+</div>
+{% endblock %}
